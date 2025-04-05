@@ -1,9 +1,13 @@
-from flask import Flask, request, redirect, jsonify
+from flask import Flask, request, redirect, jsonify, render_template
 import redis
 import hashlib
 
 app = Flask(__name__)
 r = redis.Redis(host='redis', port=6379)
+
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 @app.route('/shorten', methods=['POST'])
 def shorten_url():
