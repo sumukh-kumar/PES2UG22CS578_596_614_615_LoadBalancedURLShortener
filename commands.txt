@@ -1,3 +1,28 @@
+# ===================== WEEK 1 COMMANDS =====================
+# Step 1: Initial Setup
+# Install required tools if not already installed
+brew install minikube
+brew install kubectl
+brew install docker
+
+# Step 2: Create Project Structure
+mkdir app k8s
+cd app
+
+# Step 3: Create Flask Application
+# Create requirements.txt with:
+#   flask
+#   redis
+#   python-dotenv
+
+# Create app.py with Flask application code
+# Create templates/index.html for frontend
+# Create Dockerfile for containerization
+
+# Step 4: Test Locally
+docker build -t url-shortener:latest .
+docker run -p 5000:5000 url-shortener:latest
+
 # ===================== WEEK 2 COMMANDS =====================
 how to run:
 
@@ -6,12 +31,13 @@ minikube start
 eval $(minikube -p minikube docker-env)
 
 # Build the app image (needs Dockerfile here)
-cd /Users/siri/Desktop/pes/sem6/CC/proj/app
+cd app
 docker build -t url-shortener:latest .
-cd /Users/siri/Desktop/pes/sem6/CC/proj/k8s
+cd ../k8s
 
-kubectl apply -f /Users/siri/Desktop/pes/sem6/CC/proj/k8s/redis-deployment.yaml
-kubectl apply -f /Users/siri/Desktop/pes/sem6/CC/proj/k8s/url-shortener-deployment.yaml
+# Apply Kubernetes configurations
+kubectl apply -f redis-deployment.yaml
+kubectl apply -f url-shortener-deployment.yaml
 
 kubectl get pods -l app=redis
 kubectl get pods -l app=url-shortener -w
@@ -32,7 +58,7 @@ kubectl get service url-shortener-service
 minikube addons enable metrics-server
 
 # Apply HPA configuration
-kubectl apply -f /Users/siri/Desktop/pes/sem6/CC/proj/hpa.yaml
+kubectl apply -f hpa.yaml
 
 # Step 2: Monitor Deployments and Services
 kubectl get pods -l app=redis
