@@ -5,7 +5,7 @@ metadata:
   labels:
     app: url-shortener
 spec:
-  replicas: 3
+  replicas: 3 # Running 3 instances of the app
   selector:
     matchLabels:
       app: url-shortener
@@ -23,16 +23,27 @@ spec:
         env:
         - name: REDIS_HOST
           value: redis
+        resources: # Add this section
+          requests:
+            cpu: "100m" # Request 0.1 CPU core
+            memory: "64Mi" # Request 64 MiB of memory (optional but good practice)
+          limits: # Optional: Add limits to prevent runaway resource consumption
+            cpu: "500m" # Limit to 0.5 CPU core
+            memory: "128Mi" # Limit to 128 MiB of memory
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: url-shortener-service
 spec:
-  type: LoadBalancer
+  type: LoadBalancer # Exposes the service externally using a cloud load balancer
+  # If using Minikube/local cluster without LB support, change to NodePort
+  # type: NodePort
   selector:
-    app: url-shortener
+    app: url-shortener # Selects pods with label "app: url-shortener"
   ports:
   - protocol: TCP
-    port: 80
-    targetPort: 5000
+    port: 80         # Port the external Load Balancer listens on
+    targetPort: 5000 # Port the url-shortener container listens on
+    # If using NodePort, Kubernetes assigns a port > 30000 on the node
+    # nodePort: 30080 # Optional: specify a NodePort (if type=NodePort)
