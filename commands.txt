@@ -1,0 +1,61 @@
+# ===================== WEEK 2 COMMANDS =====================
+how to run:
+
+minikube start
+
+eval $(minikube -p minikube docker-env)
+
+# Build the app image (needs Dockerfile here)
+cd /Users/siri/Desktop/pes/sem6/CC/proj/app
+docker build -t url-shortener:latest .
+cd /Users/siri/Desktop/pes/sem6/CC/proj/k8s
+
+kubectl apply -f /Users/siri/Desktop/pes/sem6/CC/proj/k8s/redis-deployment.yaml
+kubectl apply -f /Users/siri/Desktop/pes/sem6/CC/proj/k8s/url-shortener-deployment.yaml
+
+kubectl get pods -l app=redis
+kubectl get pods -l app=url-shortener -w
+
+kubectl get services
+
+minikube tunnel --> (in new terminal window)
+
+get ip address from below command
+kubectl get service url-shortener-service
+
+# enter http://<EXTERNAL-IP> in your browser
+
+# ===================== WEEK 3 COMMANDS =====================
+# Step 1: Enable and Setup Autoscaling
+
+# Enable metrics server for HPA
+minikube addons enable metrics-server
+
+# Apply HPA configuration
+kubectl apply -f /Users/siri/Desktop/pes/sem6/CC/proj/hpa.yaml
+
+# Step 2: Monitor Deployments and Services
+kubectl get pods -l app=redis
+kubectl get pods -l app=url-shortener -w
+kubectl get services
+kubectl get hpa
+
+# Step 3: Setup Access
+# Start tunnel in new terminal
+minikube tunnel
+
+# Get service IP
+kubectl get service url-shortener-service
+
+# Step 4: Monitor Scaling and Metrics
+kubectl top pods
+kubectl get hpa url-shortener-hpa -w
+
+# Step 5: Load Testing
+# First install hey: 
+brew install hey
+# Then run test (replace IP with your EXTERNAL-IP):
+hey -c 20 -z 60s http://127.0.0.1/
+
+# Monitor pods during load test
+kubectl get pods -w
