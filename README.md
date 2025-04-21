@@ -155,6 +155,10 @@ A scalable URL shortener service built with **Flask** and **Redis**, featuring *
      ```bash
      kubectl get pods -w
      ```
+   - Watch cpu get overloaded
+     ```bash
+     kubectl get hpa url-shortener-hpa -w
+     ```
 
 ---
 
