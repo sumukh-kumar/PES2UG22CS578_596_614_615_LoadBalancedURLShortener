@@ -1,9 +1,17 @@
 from flask import Flask, request, redirect, jsonify, render_template
 import redis
 import hashlib
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 app = Flask(__name__)
-r = redis.Redis(host='redis', port=6379)
+r = redis.Redis(
+    host=os.getenv('REDIS_HOST', 'redis'),
+    port=int(os.getenv('REDIS_PORT', 6379)),
+    password=os.getenv('REDIS_PASSWORD', None)
+)
 
 @app.route('/')
 def index():

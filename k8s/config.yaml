@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: url-shortener-config
+data:
+  REDIS_PORT: "6379"
+  APP_PORT: "5000"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: url-shortener-secrets
+type: Opaque
+data:
+  REDIS_PASSWORD: base64encodedpassword
+

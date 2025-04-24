@@ -61,6 +61,20 @@ A scalable URL shortener service built with **Flask** and **Redis**, featuring *
 
 > ![URL Shortener Interface](./mdimages/output_week1.png)
 
+### Local Development Setup
+
+1. Copy the environment template:
+   ```bash
+   cp app/.env.example app/.env
+   ```
+
+2. Edit the `.env` file with your configuration
+
+3. Run the application:
+   ```bash
+   docker-compose up
+   ```
+
 ---
 
 ## Week 2: Kubernetes Deployment

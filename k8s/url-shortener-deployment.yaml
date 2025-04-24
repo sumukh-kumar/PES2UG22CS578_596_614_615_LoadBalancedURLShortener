@@ -5,7 +5,7 @@ metadata:
   labels:
     app: url-shortener
 spec:
-  replicas: 3 # Running 3 instances of the app
+  replicas: 3
   selector:
     matchLabels:
       app: url-shortener
@@ -23,13 +23,18 @@ spec:
         env:
         - name: REDIS_HOST
           value: redis
-        resources: # Add this section
+        - name: REDIS_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: url-shortener-config
+              key: REDIS_PORT
+        resources:
           requests:
-            cpu: "100m" # Request 0.1 CPU core
-            memory: "64Mi" # Request 64 MiB of memory (optional but good practice)
-          limits: # Optional: Add limits to prevent runaway resource consumption
-            cpu: "500m" # Limit to 0.5 CPU core
-            memory: "128Mi" # Limit to 128 MiB of memory
+            cpu: "100m"
+            memory: "64Mi"
+          limits:
+            cpu: "500m"
+            memory: "128Mi"
 ---
 apiVersion: v1
 kind: Service
